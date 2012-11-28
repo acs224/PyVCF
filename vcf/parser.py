@@ -492,7 +492,7 @@ class Reader(object):
 
         return record
 
-    def fetch(self, chrom, start, end=None):
+    def fetch(self, chrom, start=None, end=None):
         """ fetch records from a Tabix indexed VCF, requires pysam
             if start and end are specified, return iterator over positions
             if end not specified, return individual ``_Call`` at start or None
@@ -509,9 +509,18 @@ class Reader(object):
         if self._prepend_chr and chrom[:3] == 'chr':
             chrom = chrom[3:]
 
+        # Support full chromosome tabix fetch
+        if start is None:
+          print chrom
+          self.reader = self._tabix.fetch(chrom)
+          try:
+              return self
+          except StopIteration:
+              return None
+        
         # not sure why tabix needs position -1
         start = start - 1
-
+        
         if end is None:
             self.reader = self._tabix.fetch(chrom, start, start + 1)
             try:
