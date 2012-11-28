@@ -511,7 +511,6 @@ class Reader(object):
 
         # Support full chromosome tabix fetch
         if start is None:
-          print chrom
           self.reader = self._tabix.fetch(chrom)
           try:
               return self
