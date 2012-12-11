@@ -53,7 +53,7 @@ class _Call(object):
         if self.called:
             # lookup and return the actual DNA alleles
             try:
-                return self.gt_phase_char().join(str(self.site.alleles[int(X)]) for X in self.gt_alleles)
+                return self.gt_phase_char().join(str('.' if X == '.' else self.site.alleles[int(X)]) for X in self.gt_alleles)
             except:
                 sys.stderr.write("Allele number not found in list of alleles\n")
         else:
