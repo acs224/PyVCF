@@ -539,10 +539,11 @@ class Writer(object):
     # Reverse keys and values in header field count dictionary
     counts = dict((v,k) for k,v in field_counts.iteritems())
 
-    def __init__(self, stream, template, lineterminator="\r\n"):
+    def __init__(self, stream, template, lineterminator="\r\n", samples=None):
         self.writer = csv.writer(stream, delimiter="\t", lineterminator=lineterminator)
         self.template = template
         self.stream = stream
+        self.samples = samples
 
         two = '##{key}=<ID={0},Description="{1}">\n'
         four = '##{key}=<ID={0},Number={num},Type={2},Description="{3}">\n'
@@ -565,7 +566,9 @@ class Writer(object):
 
     def _write_header(self):
         # TODO: write INFO, etc
-        self.writer.writerow(self.fixed_fields + self.template.samples)
+        if not self.samples:
+          self.samples = self.template.samples
+        self.writer.writerow(self.fixed_fields + self.samples)
 
     def write_record(self, record):
         """ write a record to the file """
