@@ -523,7 +523,7 @@ class Reader(object):
         if end is None:
             self.reader = self._tabix.fetch(chrom, start, start + 1)
             try:
-                return self.next()
+                return self
             except StopIteration:
                 return None
 
