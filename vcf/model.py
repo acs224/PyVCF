@@ -19,7 +19,7 @@ class _Call(object):
             self.gt_nums = self.data.GT
             #: True if the GT is not ./.
             # Need to account for hemizygous calls i.e. 0/.
-            self.called = '.' not in self.gt_nums
+            self.called = None if not self.gt_nums else '.' not in self.gt_nums
         except AttributeError:
             self.gt_nums = None
             #62 a call without a genotype is not defined as called or not
